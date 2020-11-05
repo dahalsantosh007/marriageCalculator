@@ -2,13 +2,15 @@ import React, { useState,useEffect } from 'react'
 import { useLocation } from "react-router-dom";
 import {useSelector,useDispatch} from 'react-redux';
 import cloneDeep from 'lodash/cloneDeep';
-
 import {IonContent, 
         IonPage, 
         IonButton,
         IonGrid,
         IonRow,
         IonCol} from '@ionic/react';
+
+//util
+import {useAuth} from '../auth/AuthProvider';
 
 // action
 import {getGameInfo,
@@ -31,9 +33,9 @@ const GamePage = () => {
     const numberOfPlayer = useSelector(state => state.MarriageSlice.numberOfPlayer);
     const playerStats = useSelector(state => state.MarriageSlice.playerStats);
     const winner = useSelector(state => state.MarriageSlice.winner);
-    const gamePoints = useSelector(state => state.MarriageSlice.gamePoints);
     const [gameID,setGameID] = useState(0);
     const playerStatsCopied = cloneDeep(playerStats);
+    const {getAuthToken} = useAuth();
 
     useEffect(() =>{
         const gameID = location.search.replace(/[?]/,""); 
@@ -60,6 +62,8 @@ const GamePage = () => {
         let dubleeCount = 0;
         let unSeenCount = 0;
         let dubleeWinner = false
+        let token = "";
+
         const arr = playerStats.map(playerStat=>typeof(playerStat.points) === "string" ? 0: playerStat.points )
         const totalPoint = arr.reduce((acc,item)=>acc+item);
 
@@ -75,6 +79,8 @@ const GamePage = () => {
             }   
             return true;
         })
+
+        token = await getAuthToken();
 
         playerStats.map(playerStat=>{
             if(playerStat.seen==="unseen"){
@@ -94,7 +100,8 @@ const GamePage = () => {
             }
             return true;
         })
-        const gamePointResponse = await dispatch(setPlayerIndividualPoint({gameID:gameID,gamePoints:JSON.stringify(individualPointArr)}))
+        
+        const gamePointResponse = await dispatch(setPlayerIndividualPoint({gameID:gameID,gamePoints:JSON.stringify(individualPointArr),token:token}))
 
         dispatch(setPointsToFirestore({gameID:gameID,gamePoints:gamePointResponse.data.gamePoints}))
         

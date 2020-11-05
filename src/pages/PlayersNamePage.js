@@ -8,6 +8,7 @@ import {IonContent,
 // utils
 import { useHistory } from "react-router";
 import { addPlayerName, storeGameInfo } from '../features/MarriageSlice';
+import {useAuth} from '../auth/AuthProvider';
 
 // libraries
 import uuid from 'react-uuid';
@@ -24,6 +25,8 @@ const PlayersNamePage = () => {
     const adminName = useSelector(state => state.MarriageSlice.adminName);
     const dispatch = useDispatch();
     const history = useHistory();
+    const {getAuthToken} = useAuth();
+    let token = "";
 
     const playersNameArr = [];
     let playerNum = new Array(!!!numOfPlayers ? "" : numOfPlayers).fill(null);
@@ -37,6 +40,7 @@ const PlayersNamePage = () => {
 
     const storeGameInfoAction=async ()=>{
         dispatch(addPlayerName(playersNameArr))
+        token = await getAuthToken();
 
         const body={
             gameID: uuid(),
@@ -44,6 +48,7 @@ const PlayersNamePage = () => {
             numOfPlayers: numOfPlayers,
             playersName:playersNameArr,
             gamePoints:[],
+            oauthToken:token
         }
 
         const storeGameDataResult = await dispatch(storeGameInfo(body))

@@ -49,6 +49,7 @@ export function AuthProvider ({children}){
         login,
         logout,
         currentUser,
+        getAuthToken
     }
     return (
         <AuthContext.Provider value = {value}>

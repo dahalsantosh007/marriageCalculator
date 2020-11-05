@@ -19,7 +19,7 @@ const PointComponent = ({playerName,num}) => {
     useEffect(()=>{
         setSelectedValue(playerStats[parseInt(num)] && playerStats[parseInt(num)].seen)
         setPoints(playerStats[parseInt(num)] && playerStats[parseInt(num)].points)
-    },[playerStats])
+    },[playerStats,num])
 
     const handleChange = (event) => {
         setSelectedValue(event.target.value);
