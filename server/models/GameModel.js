@@ -16,6 +16,9 @@ const GameSchema = new mongoose.Schema({
     gamePoints:{
         type: Array,
     },
+    oauthToken:{
+        type: String,
+    },
     createAt:{
         type: Date,
         default: Date.now
