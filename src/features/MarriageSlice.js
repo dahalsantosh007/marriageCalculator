@@ -194,11 +194,16 @@ export const setPlayerIndividualPoint = (body)=>async dispatch=>{
         const config = {
             headers:{
                 'Content-Type':'application/json',
-                // 'Authorization': `Bearer ${body.token}`
+                'Authorization': `Bearer ${body.token}`
             }
         }
 
-        const res = await axios.post('/api/v1/updateGameInfo',body,config);
+        const bodyToSend={
+            gameID:body.gameID,
+            gamePoints:body.gamePoints
+        }
+
+        const res = await axios.post('/api/v1/updateGameInfo',bodyToSend,config);
 
         dispatch(setGamePointsReducer(res.data.data.gamePoints));
 

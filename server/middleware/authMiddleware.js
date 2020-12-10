@@ -3,7 +3,7 @@ const Game = require('../models/GameModel');
 
 exports.authenticateToken =async(req,res,next) =>{
     try{
-        console.log("Entered get token info = ", req.body.gameID);
+        console.log("Entered get token info = ", req.body);
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1]
 

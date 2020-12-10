@@ -8,7 +8,7 @@ const InputComponent = ({ind,func}) => {
         <>
             <IonInput 
                 value={playerName} 
-                placeholder="Enter Input" 
+                placeholder="Enter Player Name" 
                 onIonChange={e => setPlayerName(e.target.value)}
                 onBlur={()=>func(playerName,ind)}
                 >
